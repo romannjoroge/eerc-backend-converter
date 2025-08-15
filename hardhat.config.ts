@@ -12,6 +12,8 @@ dotenv.config();
 
 const RPC_URL = process.env.RPC_URL || "https://api.avax.network/ext/bc/C/rpc";
 
+console.log(process.env.PRIVATE_KEY, process.env.PRIVATE_KEY2);
+
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.27",
@@ -33,7 +35,7 @@ const config: HardhatUserConfig = {
     fuji: {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
       chainId: 43113,
-      accounts: [process.env.PRIVATE_KEY || "", process.env.PRIVATE_KEY_2 || ""],
+      accounts: [process.env.PRIVATE_KEY || "", process.env.PRIVATE_KEY2 || ""],
     },
   },
   gasReporter: {
