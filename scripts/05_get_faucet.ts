@@ -5,10 +5,10 @@ import * as path from "path";
 const main = async () => {
     // Use specific PRIVATE_KEY for the faucet claim
     // const [wallet] = await ethers.getSigners();
-    const [owner, wallet] = await ethers.getSigners();
+    const [owner, _] = await ethers.getSigners();
     
     // Create wallet with the PRIVATE_KEY
-    const userAddress = await wallet.getAddress();
+    const userAddress = await owner.getAddress();
     
     // Read addresses from the latest deployment
     const deploymentPath = path.join(__dirname, "../deployments/latest-fuji.json");
@@ -37,7 +37,7 @@ const main = async () => {
     }
     
     // Connect to the testERC20 contract using the wallet
-    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address, wallet);
+    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address, owner);
     
     try {
         // Get token details

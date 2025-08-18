@@ -52,8 +52,8 @@ function decryptEGCTBalance(privateKey: bigint, c1: [bigint, bigint], c2: [bigin
 const main = async () => {
     // Get the wallet
     // const [wallet] = await ethers.getSigners();
-    const [owner, wallet] = await ethers.getSigners();
-    const userAddress = await wallet.getAddress();
+    const [owner, _] = await ethers.getSigners();
+    const userAddress = await owner.getAddress();
     
     // Read addresses from the latest deployment
     const deploymentPath = path.join(__dirname, "../deployments/latest-fuji.json");
@@ -69,9 +69,9 @@ const main = async () => {
     console.log("TestERC20:", testERC20Address);
     
     // Connect to contracts
-    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address, wallet);
-    const encryptedERC = await ethers.getContractAt("EncryptedERC", encryptedERCAddress, wallet);
-    const registrar = await ethers.getContractAt("Registrar", registrarAddress, wallet);
+    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address, owner);
+    const encryptedERC = await ethers.getContractAt("EncryptedERC", encryptedERCAddress, owner);
+    const registrar = await ethers.getContractAt("Registrar", registrarAddress, owner);
     
     try {
         // Check if user is registered
@@ -101,7 +101,7 @@ const main = async () => {
                 const message = `eERC
 Registering user with
  Address:${userAddress.toLowerCase()}`;
-                signature = await wallet.signMessage(message);
+                signature = await owner.signMessage(message);
                 userPrivateKey = i0(signature);
             }
         } else {
@@ -109,7 +109,7 @@ Registering user with
             const message = `eERC
 Registering user with
  Address:${userAddress.toLowerCase()}`;
-            signature = await wallet.signMessage(message);
+            signature = await owner.signMessage(message);
             userPrivateKey = i0(signature);
         }
         

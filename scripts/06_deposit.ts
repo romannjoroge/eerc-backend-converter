@@ -106,8 +106,8 @@ async function getDecryptedBalance(
 const main = async () => {
     // Get the wallet
     // const [owner, wallet] = await ethers.getSigners();
-    const [wallet] = await ethers.getSigners();
-    const userAddress = await wallet.getAddress();
+    const [owner, _] = await ethers.getSigners();
+    const userAddress = await owner.getAddress();
     
     // Read addresses from the latest deployment
     const deploymentPath = path.join(__dirname, "../deployments/latest-fuji.json");
@@ -139,9 +139,9 @@ const main = async () => {
     }
     
     // Connect to contracts using the wallet
-    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address, wallet);
-    const encryptedERC = await ethers.getContractAt("EncryptedERC", encryptedERCAddress, wallet);
-    const registrar = await ethers.getContractAt("Registrar", registrarAddress, wallet);
+    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address, owner);
+    const encryptedERC = await ethers.getContractAt("EncryptedERC", encryptedERCAddress, owner);
+    const registrar = await ethers.getContractAt("Registrar", registrarAddress, owner);
     
     try {
         // 1. Check if user is registered
@@ -159,7 +159,7 @@ const main = async () => {
 Registering user with
  Address:${userAddress.toLowerCase()}`;
         console.log('📝 Message to sign for balance:', message);
-        const signature = await wallet.signMessage(message);
+        const signature = await owner.signMessage(message);
         if (!signature || signature.length < 64) {
             throw new Error("Invalid signature received from user");
         }

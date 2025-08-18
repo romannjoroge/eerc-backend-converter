@@ -12,8 +12,6 @@ dotenv.config();
 
 const RPC_URL = process.env.RPC_URL || "https://api.avax.network/ext/bc/C/rpc";
 
-console.log(process.env.PRIVATE_KEY, process.env.PRIVATE_KEY2);
-
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.27",
@@ -37,6 +35,11 @@ const config: HardhatUserConfig = {
       chainId: 43113,
       accounts: [process.env.PRIVATE_KEY || "", process.env.PRIVATE_KEY2 || ""],
     },
+    tenderly: {
+      url: "https://virtual.avalanche-testnet.eu.rpc.tenderly.co/a28fd983-c805-454c-a60e-bb956a592926",
+      chainId: 43113,
+      accounts: [process.env.PRIVATE_KEY || "", process.env.PRIVATE_KEY2 || ""],
+    }
   },
   gasReporter: {
     enabled: !!process.env.REPORT_GAS,

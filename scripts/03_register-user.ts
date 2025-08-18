@@ -10,9 +10,9 @@ import type { RegistrationCircuit } from "../generated-types/zkit";
 const main = async () => {
     // Use specific PRIVATE_KEY for registration
     // const [wallet] = await ethers.getSigners();
-    const [owner, wallet] = await ethers.getSigners();
+    const [_, deployer] = await ethers.getSigners();
 
-    const userAddress = await wallet.getAddress();
+    const userAddress = await deployer.getAddress();
     
     // Read deployment addresses
     const deploymentPath = path.join(__dirname, "../deployments/latest-fuji.json");
@@ -41,7 +41,7 @@ const main = async () => {
     }
     
     // Connect to contract using the specific wallet
-    const registrar = await ethers.getContractAt("Registrar", registrarAddress, wallet);
+    const registrar = await ethers.getContractAt("Registrar", registrarAddress, deployer);
     
     // 1. Check if already registered
     const isRegistered = await registrar.isUserRegistered(userAddress);
@@ -55,7 +55,7 @@ const main = async () => {
 Registering user with
  Address:${userAddress.toLowerCase()}`;
     console.log('📝 Message to sign for balance:', message);
-    const signature = await wallet.signMessage(message);
+    const signature = await deployer.signMessage(message);
     if (!signature || signature.length < 64) {
         throw new Error("Invalid signature received from user");
     }
